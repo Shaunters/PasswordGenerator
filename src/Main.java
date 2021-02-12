@@ -5,7 +5,7 @@ public class Main {
     public static void main(String[] args){
         Scanner sc = new Scanner(System.in);
         int length = 5;
-        boolean genNumbers = false;
+        boolean genNumbers;
         String[] validResponses = {"yes", "no"};
 
         // Getting Password Lenght;
@@ -30,15 +30,17 @@ public class Main {
 
         sc.nextLine();
         String genStr = sc.nextLine().toLowerCase();
-        if(genStr.equals("yes")){
-            genNumbers = true;
-        }
-        else if (genStr.equals("no")) {
-            genNumbers = false;
-        }
-        else if (!Arrays.asList(validResponses).contains(genStr)) {
-            System.out.println("Invalid response, setting default value (false);");
-            genNumbers = false;
+        switch(genStr){
+            case "yes":
+                genNumbers = true;
+                break;
+            case "no":
+                genNumbers = false;
+                break;
+            default:
+                System.out.println("Invalid response! Using default option (no).");
+                genNumbers = false;
+                break;
         }
 
         System.out.println("Password generated: " + generatePassword(length, genNumbers));
@@ -48,26 +50,25 @@ public class Main {
         String abc = "ABCDEFGHIJKLMNOPQRSTUVWXYZ".toLowerCase();
         Random rd = new Random();
 
-        String password = "";
+        StringBuilder password = new StringBuilder();
         // Looping "i" times;
         for(int i = 0; i != maxSize; i++) {
 
             // Check if we are to generate numbers, if not, generate only chars;
             if(!generateNumbers) {
                 char letter = abc.charAt(rd.nextInt(abc.length()));
-                password += Character.toString(letter);
+                password.append(Character.toString(letter));
             }
             else {
                 if (rd.nextBoolean()) {
                     int randomNum = rd.nextInt((9 - 1) + 1) + 1;
-                    password += randomNum;
-                    continue;
+                    password.append(randomNum);
                 } else {
                     char letter = abc.charAt(rd.nextInt(abc.length()));
-                    password += Character.toString(letter);
+                    password.append(Character.toString(letter));
                 }
             }
         }
-        return password;
+        return password.toString();
     }
 }
